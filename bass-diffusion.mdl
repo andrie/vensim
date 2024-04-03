@@ -1,0 +1,323 @@
+{UTF-8}
+Indicated change in staff=
+	0
+	~	1
+	~		|
+
+Adjustment time=
+	1
+	~	Month
+	~		|
+
+Response time=
+	Open tickets / New ticket rate
+	~	Month
+	~	Little's law
+	~	:SUPPLEMENTARY 
+	|
+
+Max closing rate=
+	Open tickets/Adjustment time
+	~	tkt/Month
+	~		|
+
+Closing ticket rate=
+	min(Ticket closing capacity,Max closing rate)
+	~	tkt/Month
+	~		|
+
+Available monthly hours=
+	Support staff * Support person hours
+	~	Month
+	~		|
+
+Change in support staff=
+	((Indicated change in staff * Support staff) / Staff hiring time)
+	~	ppl/Month
+	~		|
+
+Conversation time hours=
+	0.5
+	~	hour/message [0.25,2,0.25]
+	~		|
+
+Support person hours=
+	16 * 20 / (30 * 24)
+	~	Month/ppl
+	~		|
+
+SLA hours=
+	24
+	~	hour
+	~		|
+
+Ticket closing capacity=
+	Available monthly hours / Time required per ticket
+	~	tkt/Month
+	~		|
+
+SLA=
+	SLA hours / (24 * 30)
+	~	Month
+	~		~	:SUPPLEMENTARY 
+	|
+
+Staff hiring time=
+	6
+	~	Month
+	~		|
+
+Time per conversation=
+	Conversation time hours / (24 * 30)
+	~	mth/msg
+	~		|
+
+Time required per ticket=
+	Conversations per ticket * Time per conversation
+	~	Month/tkt
+	~		|
+
+Accumulated tickets= INTEG (
+	Closing ticket rate,
+		0)
+	~	tkt
+	~		~	:SUPPLEMENTARY 
+	|
+
+Tickets per new customer=
+	1
+	~	tkt/logo [0,?]
+	~		|
+
+Conversations per ticket=
+	20
+	~	msg/tkt
+	~		|
+
+Open tickets= INTEG (
+	New ticket rate - Closing ticket rate,
+		0)
+	~	tkt [0,?]
+	~		|
+
+New customers=
+	Potential customers * Marketing effect + Customers*Word of mouth effect * Potential customers\
+		 / (Potential customers + 
+Customers)
+	~	logo/Month
+	~		|
+
+New ticket rate=
+	New customers*Tickets per new customer + Customers * Tickets per existing customer
+	~	tkt/Month
+	~		|
+
+Tickets per existing customer=
+	0.05
+	~	tkt/logo/Month [0,0.1,0.01]
+	~		|
+
+Support staff= INTEG (
+	Change in support staff,
+		1)
+	~	ppl
+	~		|
+
+Revenue=
+	Customers * Annual customer value / 12
+	~	$/Month
+	~		~	:SUPPLEMENTARY 
+	|
+
+Customers= INTEG (
+	New customers,
+		0)
+	~	logo
+	~		|
+
+Annual customer value=
+	10
+	~	$/logo/Month
+	~		|
+
+Marketing effect=
+	0.003
+	~	1/Month [0,0.01,0.0001]
+	~		|
+
+Potential customers= INTEG (
+	-New customers,
+		1000)
+	~	logo
+	~		|
+
+Word of mouth effect=
+	0.1
+	~	1/Month [0,0.5,0.01]
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 100
+	~	Month
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Month
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	Month [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	Month [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Customer
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,2
+10,1,Marketing effect,386,201,58,10,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,2,Potential customers,412,301,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,3,Customers,715,299,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,4,6,3,4,0,0,22,0,0,0,-1--1--1,,1|(626,298)|
+1,5,6,2,100,0,0,22,0,0,0,-1--1--1,,1|(509,298)|
+11,6,970,572,298,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,New customers,572,316,56,10,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,8,1,7,1,0,0,0,0,64,0,-1--1--1,,1|(466,227)|
+1,9,2,7,1,0,0,0,0,64,0,-1--1--1,,1|(484,365)|
+1,10,3,7,1,0,0,0,0,64,0,-1--1--1,,1|(639,367)|
+10,11,Word of mouth effect,629,455,54,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,12,11,7,1,0,0,0,0,64,0,-1--1--1,,1|(575,383)|
+12,13,0,1297,544,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+New customers,Graph
+12,14,0,1298,241,150,150,3,12,0,0,2,0,0,0,0,0,0,0,0,0
+Customers,Graph
+1,18,20,16,4,0,0,22,0,0,0,-1--1--1,,1|(406,609)|
+1,19,20,15,100,0,0,22,0,0,0,-1--1--1,,1|(298,609)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Revenue
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Customers,445,262,44,11,8,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128,0,0,0,0,0,0
+10,2,Annual customer value,537,154,54,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,3,Revenue,646,242,28,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,4,2,3,0,0,0,0,0,64,0,-1--1--1,,1|(590,197)|
+1,5,1,3,0,0,0,0,0,64,0,-1--1--1,,1|(546,251)|
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*Tickets
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|96,96,100,0
+10,1,Customers,604,223,49,10,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|12||128-128-128,0,0,0,0,0,0
+10,2,New customers,296,227,43,18,8,2,0,35,-1,0,0,0,128-128-128,0-0-0,Arial|12||128-128-128,0,0,0,0,0,0
+10,3,Open tickets,550,383,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+12,4,48,368,378,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,5,7,3,4,0,0,22,0,0,0,-1--1--1,,1|(473,378)|
+1,6,7,4,100,0,0,22,0,0,0,-1--1--1,,1|(401,378)|
+11,7,48,430,378,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,8,New ticket rate,430,406,44,20,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,9,10,3,100,0,0,22,0,0,0,-1--1--1,,1|(635,377)|
+11,10,332,687,377,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,Closing ticket rate,687,403,51,18,40,131,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,12,2,7,1,0,0,0,0,64,0,-1--1--1,,1|(383,297)|
+10,13,Tickets per new customer,293,283,58,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,14,Tickets per existing customer,595,270,64,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,15,13,7,1,0,0,0,0,64,0,-1--1--1,,1|(349,317)|
+1,16,1,7,1,0,0,0,0,64,0,-1--1--1,,1|(476,270)|
+1,17,14,7,1,0,0,0,0,64,0,-1--1--1,,1|(487,308)|
+10,18,Accumulated tickets,886,383,50,19,3,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,19,10,18,4,0,0,22,0,0,0,-1--1--1,,1|(764,377)|
+12,20,0,1303,242,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+Open tickets,Graph
+10,21,Support staff,602,702,40,20,3,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+12,22,48,426,698,10,8,0,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,23,25,21,4,0,0,22,0,0,0,-1--1--1,,1|(533,698)|
+1,24,25,22,100,0,0,22,0,0,0,-1--1--1,,1|(464,698)|
+11,25,48,499,698,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,26,Change in support staff,499,724,45,18,40,3,0,32,-1,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,27,Conversations per ticket,954,531,53,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,28,Time per conversation,948,614,47,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,29,Conversation time hours,997,691,49,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,30,29,28,1,0,0,0,0,64,0,-1--1--1,,1|(1011,650)|
+10,31,Ticket closing capacity,689,485,50,18,8,131,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,32,21,47,1,0,0,0,0,64,0,-1--1--1,,1|(702,673)|
+1,33,27,37,1,0,0,0,0,64,0,-1--1--1,,1|(821,548)|
+1,34,28,37,1,0,0,0,0,64,0,-1--1--1,,1|(811,571)|
+1,35,31,11,1,0,0,0,0,64,0,-1--1--1,,1|(697,434)|
+10,36,Indicated change in staff,346,562,53,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,37,Time required per ticket,795,558,52,18,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+10,38,SLA,204,488,18,10,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,39,37,31,1,0,0,0,0,64,0,-1--1--1,,1|(721,523)|
+10,40,SLA hours,133,416,39,10,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,41,40,38,1,0,0,0,0,64,0,-1--1--1,,1|(157,457)|
+1,42,36,26,1,0,0,0,0,64,0,-1--1--1,,1|(425,602)|
+1,43,21,26,1,0,0,0,0,64,0,-1--1--1,,1|(568,777)|
+10,44,Staff hiring time,345,733,56,10,8,3,0,32,0,0,0,0,0-0-0,0-0-0,Arial|12||0-0-0,0,0,0,0,0,0
+1,45,44,26,1,0,0,0,0,64,0,-1--1--1,,1|(404,774)|
+12,46,0,1604,242,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+Closing ticket rate,Graph
+10,47,Available monthly hours,721,630,57,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,48,47,31,1,0,0,0,0,64,0,-1--1--1,,1|(662,528)|
+12,49,0,1302,548,150,150,3,44,0,0,1,0,0,0,0,0,0,0,0,0
+Support_staffing
+10,50,Support person hours,604,621,50,19,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,51,50,47,1,0,0,0,0,64,0,-1--1--1,,1|(650,654)|
+12,52,0,1608,548,150,150,3,44,0,0,2,0,0,0,0,0,0,0,0,0
+Ticket closing capacity,Graph
+10,53,Response time,447,496,46,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,54,3,53,1,0,0,0,0,64,0,-1--1--1,,1|(481,461)|
+1,55,8,53,1,0,0,0,0,64,0,-1--1--1,,1|(457,435)|
+10,56,Max closing rate,640,319,52,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,57,3,56,1,0,0,0,0,64,0,-1--1--1,,1|(563,335)|
+10,58,Adjustment time,774,269,51,11,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,59,58,56,0,0,0,0,0,64,0,-1--1--1,,1|(713,291)|
+1,60,56,11,0,0,0,0,0,64,0,-1--1--1,,1|(657,351)|
+///---\\\
+:GRAPH Support_staffing
+:TITLE Support staffing
+:SCALE
+:VAR Support staff
+:VAR Desired support staff
+:L<%^E!@
+1:current.vdfx
+1:baseline.vdfx
+9:current
+22:hour,month,mth
+23:0
+15:0,0,0,0,0,0
+19:100,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+4:Time
+5:New customers
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:2
+41:0
+76:0
+77:0
+78:0
+79:0
+80:0
+81:0
+24:0
+25:100
+26:100
+75:
+43:

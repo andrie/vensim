@@ -1,0 +1,17 @@
+# ignore all python artefacts
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore all R artefacts
+.Rproj.user/
+.Rhistory
+.Renviron
+
+# Ignore vensim artefacts
+*.vdfx
+
+# Igore rsconnect artefacts
+rsconnect/
